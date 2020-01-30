@@ -11,28 +11,25 @@ var shell32 = windows.NewLazySystemDLL("shell32.dll")
 var procExtractIconExW = shell32.NewProc("ExtractIconExW")
 
 var kernel32 = windows.NewLazySystemDLL("kernel32.dll")
-var procSetConsoleIcon = kernel32.NewProc("SetConsoleIcon")
-var procGetConsoleIcon = kernel32.NewProc("GetConsoleIcon")
 var procGetConsoleWindow = kernel32.NewProc("GetConsoleWindow")
-var procGetModuleHandle = kernel32.NewProc("GetModuleHandleW")
 
 var user32 = windows.NewLazySystemDLL("user32.dll")
 var procLoadIcon = user32.NewProc("LoadIconW")
 var procDestroyIcon = user32.NewProc("DestroyIcon")
 var procSendMessage = user32.NewProc("SendMessageA")
 
-type iconHandle uintptr
+type _Icon uintptr
 
-func (h iconHandle) Close() {
+func (h _Icon) Close() {
 	if h != 0 {
 		procDestroyIcon.Call(uintptr(h))
 	}
 }
 
-func extractIconEx(fname string) (iconHandle, error) {
+func readFrom(fname string) (_Icon, error) {
 	_fname, err := windows.UTF16PtrFromString(fname)
 	if err != nil {
-		return iconHandle(0), err
+		return _Icon(0), err
 	}
 	var handle uintptr
 
@@ -45,11 +42,7 @@ func extractIconEx(fname string) (iconHandle, error) {
 	if rc <= 0 {
 		return 0, err
 	}
-	return iconHandle(handle), nil
-}
-
-func (h iconHandle) setConsoleIcon() {
-	procSetConsoleIcon.Call(uintptr(h))
+	return _Icon(handle), nil
 }
 
 func sendMessage(h, m, w, l uintptr) uintptr {
@@ -62,22 +55,12 @@ func getConsoleWindow() uintptr {
 	return handle
 }
 
-func getModuleHandle() uintptr {
-	handle, _, _ := procGetModuleHandle.Call(0)
-	return handle
-}
-
-func setConsoleExeIcon() (func(bool), error) {
-	fname, err := os.Executable()
-	if err != nil {
-		return func(bool) {}, err
-	}
-	h, err := extractIconEx(fname)
+func setConsole(fname string) (func(bool), error) {
+	h, err := readFrom(fname)
 	if err != nil {
 		return func(bool) {}, err
 	}
 
-	// h.setConsoleIcon()
 	hConsole := getConsoleWindow()
 
 	org_big := sendMessage(hConsole, WM_GETICON, ICON_BIG, uintptr(h))
@@ -92,4 +75,12 @@ func setConsoleExeIcon() (func(bool), error) {
 		}
 		h.Close()
 	}, nil
+}
+
+func setConsoleExe() (func(bool), error) {
+	fname, err := os.Executable()
+	if err != nil {
+		return func(bool) {}, err
+	}
+	return SetConsole(fname)
 }
