@@ -1,4 +1,4 @@
-package nodos
+package consoleicon
 
 import (
 	"os"
@@ -10,6 +10,7 @@ import (
 var shell32 = windows.NewLazySystemDLL("shell32.dll")
 var procExtractIconExW = shell32.NewProc("ExtractIconExW")
 
+var kernel32 = windows.NewLazySystemDLL("kernel32.dll")
 var procSetConsoleIcon = kernel32.NewProc("SetConsoleIcon")
 var procGetConsoleIcon = kernel32.NewProc("GetConsoleIcon")
 var procGetConsoleWindow = kernel32.NewProc("GetConsoleWindow")
