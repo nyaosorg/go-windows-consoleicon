@@ -2,10 +2,10 @@
 
 package consoleicon
 
-func setConsole(fname string) (func(bool), error) {
+func setFrom(fname string) (func(bool), error) {
 	return func(bool) {}, nil
 }
 
-func setConsoleExe() (func(bool), error) {
+func setFromExe() (func(bool), error) {
 	return func(bool) {}, nil
 }

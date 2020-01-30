@@ -55,7 +55,7 @@ func getConsoleWindow() uintptr {
 	return handle
 }
 
-func setConsole(fname string) (func(bool), error) {
+func setFrom(fname string) (func(bool), error) {
 	h, err := readFrom(fname)
 	if err != nil {
 		return func(bool) {}, err
@@ -77,10 +77,10 @@ func setConsole(fname string) (func(bool), error) {
 	}, nil
 }
 
-func setConsoleExe() (func(bool), error) {
+func setFromExe() (func(bool), error) {
 	fname, err := os.Executable()
 	if err != nil {
 		return func(bool) {}, err
 	}
-	return SetConsole(fname)
+	return SetFrom(fname)
 }

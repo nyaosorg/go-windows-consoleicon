@@ -11,7 +11,7 @@ import (
 const icon_restore = true
 
 func main() {
-	closer, err := consoleicon.SetConsole(`C:\Windows\System32\notepad.exe`)
+	closer, err := consoleicon.SetFrom(`C:\Windows\System32\notepad.exe`)
 	if err != nil {
 		return
 	}

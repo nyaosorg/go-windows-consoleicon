@@ -1,9 +1,9 @@
 package consoleicon
 
-func SetConsole(fname string) (func(bool), error) {
-	return setConsole(fname)
+func SetFrom(fname string) (func(bool), error) {
+	return setFrom(fname)
 }
 
-func SetConsoleExe() (func(bool), error) {
-	return setConsoleExe()
+func SetFromExe() (func(bool), error) {
+	return setFromExe()
 }
