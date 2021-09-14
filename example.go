@@ -5,7 +5,7 @@ package main
 import (
 	"os"
 
-	"github.com/zetamatta/go-windows-consoleicon"
+	"github.com/nyaosorg/go-windows-consoleicon"
 )
 
 const icon_restore = true
