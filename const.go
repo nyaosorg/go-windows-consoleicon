@@ -1,6 +1,6 @@
 package consoleicon
 
-//go:generate go run github.com/zetamatta/go-importconst/
+//go:generate go run github.com/nyaosorg/go-importconst/
 //	<windows.h>
 //	WM_SETICON
 //	WM_GETICON
