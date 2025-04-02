@@ -1,11 +1,9 @@
 go-windows-consoleicon
 ======================
 
-Set icon to the corner of the current console (Command Prompt)
+Change the small icon in the top-left corner of the current console (Command Prompt).
 
-```go
-// +build example
-
+```example.go
 package main
 
 import (
